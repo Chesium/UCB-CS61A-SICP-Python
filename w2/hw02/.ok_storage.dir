@@ -1,0 +1,7 @@
+'product-correct', (0, 66)
+'accumulate-correct', (512, 66)
+'summation_using_accumulate-correct', (1024, 66)
+'product_using_accumulate-correct', (1536, 66)
+'digit_distance-correct', (2048, 66)
+'interleaved_sum-correct', (2560, 66)
+'count_coins-correct', (3072, 66)

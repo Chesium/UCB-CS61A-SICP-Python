@@ -14,6 +14,11 @@ def pascal(row, column):
     6
     """
     "*** YOUR CODE HERE ***"
+    if column>row:
+        return 0
+    if column==0 or row==column:
+        return 1
+    return pascal(row-1,column-1)+pascal(row-1,column)
 
 
 def insert_items(s, before, after):
@@ -42,6 +47,12 @@ def insert_items(s, before, after):
     True
     """
     "*** YOUR CODE HERE ***"
+    l=len(s)
+    for i in range(l):
+        ci=l-i-1
+        if s[ci]==before:
+            s[ci+1:]=[after]+s[ci+1:]
+    return s
 
 
 HW_SOURCE_FILE=__file__
@@ -51,11 +62,13 @@ def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
     "*** YOUR CODE HERE ***"
+    return ['planet',mass]
 
 def mass(p):
     """Select the mass of a planet."""
     assert is_planet(p), 'must call mass on a planet'
     "*** YOUR CODE HERE ***"
+    return p[1]
 
 def is_planet(p):
     """Whether p is a planet."""
@@ -108,6 +121,9 @@ def balanced(m):
     True
     """
     "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return True
+    return balanced(end(left(m))) and balanced(end(right(m))) and total_mass(end(left(m)))*length(left(m)) == total_mass(end(right(m)))*length(right(m))
 
 
 def berry_finder(t):
@@ -128,6 +144,12 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
+    if label(t)=='berry':
+        return True
+    for b in branches(t):
+        if berry_finder(b):
+            return True
+    return False
 
 
 HW_SOURCE_FILE=__file__
@@ -143,6 +165,12 @@ def max_path_sum(t):
     17
     """
     "*** YOUR CODE HERE ***"
+    mx=0
+    for b in branches(t):
+        cur=max_path_sum(b)
+        if cur>mx:
+            mx=cur
+    return label(t)+mx
 
 
 def print_move(origin, destination):
@@ -178,6 +206,13 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    mov=lambda i,j:print("Move the top disk from rod",i,"to rod",j)
+    s,t,e=start,6-start-end,end
+    if n==1:
+        return mov(s,e)
+    move_stack(n-1,s,t)
+    mov(s,e)
+    move_stack(n-1,t,e)
 
 
 from operator import sub, mul
@@ -193,7 +228,7 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return (lambda f:lambda x:f(f,x))(lambda f,x:1 if x==1 else x*f(f,x-1))
 
 
 def mobile(left, right):

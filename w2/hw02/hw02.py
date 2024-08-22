@@ -1,4 +1,5 @@
 from operator import add, mul
+from platform import mac_ver
 
 square = lambda x: x * x
 
@@ -32,6 +33,11 @@ def product(n, term):
     162
     """
     "*** YOUR CODE HERE ***"
+    res=1
+    while n:
+        res*=term(n)
+        n-=1
+    return res
 
 
 def accumulate(fuse, start, n, term):
@@ -54,6 +60,10 @@ def accumulate(fuse, start, n, term):
     19
     """
     "*** YOUR CODE HERE ***"
+    for i in range(1,1+n):
+        start=fuse(start,term(i))
+    return start
+
 
 
 def summation_using_accumulate(n, term):
@@ -68,7 +78,7 @@ def summation_using_accumulate(n, term):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(summation_using_accumulate)).body[0].body]
     ['Expr', 'Return']
     """
-    return ____
+    return accumulate(lambda a,b:a+b,0,n,term)
 
 
 def product_using_accumulate(n, term):
@@ -83,7 +93,7 @@ def product_using_accumulate(n, term):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(product_using_accumulate)).body[0].body]
     ['Expr', 'Return']
     """
-    return ____
+    return accumulate(lambda a,b:a*b,1,n,term)
 
 
 def make_repeater(f, n):
@@ -100,6 +110,11 @@ def make_repeater(f, n):
     390625
     """
     "*** YOUR CODE HERE ***"
+    def res(x):
+        for _ in range(n):
+            x=f(x)
+        return x
+    return res
 
 
 def digit_distance(n):
@@ -122,6 +137,7 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    return 0 if n<10 else digit_distance(n//10)+abs(n//10%10-n%10)
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -146,7 +162,9 @@ def interleaved_sum(n, odd_func, even_func):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    def tmp(p,q,f1,f2):
+        return f1(p)+(0 if p==q else tmp(p+1,q,f2,f1))
+    return tmp(1,n,odd_func,even_func)
 
 def next_larger_coin(coin):
     """Returns the next larger coin in order.
@@ -200,4 +218,12 @@ def count_coins(total):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    def tmp(t,m):
+        if t==0:
+            return 1
+        if t<0:
+            return 0
+        if m==1:
+            return 1
+        return tmp(t-m,m)+tmp(t,next_smaller_coin(m))
+    return tmp(total,25)

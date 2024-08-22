@@ -23,6 +23,15 @@ def double_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    def consec(cur,cumu=0):
+        if cur==0:
+            return False
+        if cur%10==8:
+            if cumu==0:
+                return consec(cur//10,1)
+            return True
+        return consec(cur//10)
+    return consec(n)
 
 
 def make_onion(f, g):
@@ -51,11 +60,11 @@ def make_onion(f, g):
     """
     def can_reach(x, y, limit):
         if limit < 0:
-            return ____
+            return False
         elif x == y:
-            return ____
+            return True
         else:
-            return can_reach(____, ____, limit - 1) or can_reach(____, ____, limit - 1)
+            return can_reach(f(x), y, limit - 1) or can_reach(g(x), y, limit - 1)
     return can_reach
 
 
@@ -82,6 +91,16 @@ def mario_number(level):
     180
     """
     "*** YOUR CODE HERE ***"
+    def run(pos):
+        if pos>=len(level):
+            return 0
+        if pos==len(level)-1:
+            return 1
+        if level[pos]=='P':
+            return 0
+        else:
+            return run(pos+1)+run(pos+2)
+    return run(0)
 
 
 def max_subseq(n, t):
@@ -116,6 +135,22 @@ def max_subseq(n, t):
     5
     """
     "*** YOUR CODE HERE ***"
+    if t==0:
+        return 0
+    nd=len(str(n))
+    if t>=nd:
+        return n
+    s=str(n)
+    mx=0
+    mxi=0
+    for i in range(len(s)-t+1):
+        cur=int(s[i])
+        if mx<cur:
+            mx=cur
+            mxi=i
+    if t==1:
+        return mx
+    return int(str(mx)+str(max_subseq(s[mxi+1:],t-1)))
 
 
 def is_prime(n):
@@ -128,4 +163,12 @@ def is_prime(n):
     False
     """
     "*** YOUR CODE HERE ***"
-
+    if n==1:
+        return False
+    def tmp(n,to):
+        if n==to:
+            return True
+        if n%to==0:
+            return False
+        return tmp(n,to+1)
+    return tmp(n,2)

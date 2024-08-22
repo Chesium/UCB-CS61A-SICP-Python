@@ -16,6 +16,10 @@ def flatten(s):
     ['m', 'i', 'n', 'm', 'e', 'w', 't', 'a', 't', 'i', 'o', 'n', 's']
     """
     "*** YOUR CODE HERE ***"
+    res=[]
+    for x in s:
+        res+=flatten(x) if type(x)==list else[x]
+    return res
 
 
 def merge(s, t):
@@ -42,6 +46,13 @@ def merge(s, t):
     True
     """
     "*** YOUR CODE HERE ***"
+    if not s or not t:
+      return s or t
+    if s[0] > t[0]:
+      return [t[0]]+merge(s,t[1:])
+    if s[0] < t[0]:
+      return [s[0]]+merge(s[1:],t)
+    return [s[0],t[0]]+merge(s[1:],t[1:])
 
 
 def size_of_tree(t):
@@ -59,6 +70,7 @@ def size_of_tree(t):
     7
     """
     "*** YOUR CODE HERE ***"
+    return 1+sum([size_of_tree(x) for x in branches(t)])
 
 
 def replace_loki_at_leaf(t, lokis_replacement):
@@ -91,6 +103,7 @@ def replace_loki_at_leaf(t, lokis_replacement):
     True
     """
     "*** YOUR CODE HERE ***"
+    return tree(lokis_replacement if is_leaf(t) and label(t)=="loki" else label(t),[replace_loki_at_leaf(x,lokis_replacement) for x in branches(t)])
 
 
 def divide(quotients, divisors):
@@ -102,7 +115,7 @@ def divide(quotients, divisors):
     >>> divide(range(1, 5), range(20, 25))
     {1: [20, 21, 22, 23, 24], 2: [20, 22, 24], 3: [21, 24], 4: [20, 24]}
     """
-    return {____: ____ for ____ in ____}
+    return {q: [d for d in divisors if d%q==0] for q in quotients}
 
 
 
