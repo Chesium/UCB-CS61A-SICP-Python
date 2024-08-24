@@ -9,6 +9,10 @@ def hailstone(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    yield n
+    if n!=1:
+        n=3*n+1 if n%2 else n//2
+    yield from hailstone(n)
 
 
 def merge(a, b):
@@ -24,6 +28,17 @@ def merge(a, b):
     [2, 3, 5, 7, 8, 9, 11, 13, 14, 15]
     """
     "*** YOUR CODE HERE ***"
+    p,q=next(a),next(b)
+    while 1:
+        if p==q:
+            yield p
+            p,q=next(a),next(b)
+        elif p<q:
+            yield p
+            p=next(a)
+        else:
+            yield q
+            q=next(b)
 
 
 def perms(seq):
@@ -49,6 +64,13 @@ def perms(seq):
     [['a', 'b'], ['b', 'a']]
     """
     "*** YOUR CODE HERE ***"
+    seq=list(seq)
+    if len(seq)==1:
+        yield seq
+    else:
+        for w in perms(seq[1:]):
+            for i in range(len(w)+1):
+                yield w[:i]+[seq[0]]+w[i:]
 
 
 def yield_paths(t, value):
@@ -86,10 +108,10 @@ def yield_paths(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
     if label(t) == value:
-        yield ____
+        yield [value]
     for b in branches(t):
-        for ____ in ____:
-            yield ____
+        for sub in yield_paths(b,value):
+            yield [label(t)]+sub
 
 
 class Minty:
@@ -122,18 +144,24 @@ class Minty:
 
     def create(self, type):
         "*** YOUR CODE HERE ***"
+        return Coin(self.year,type)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year=Minty.present_year
 
 class Coin:
     cents = 50
 
     def __init__(self, year, type):
         "*** YOUR CODE HERE ***"
+        self.year=year
+        self.cents=10 if type=='Dime' else 5
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        diff=Minty.present_year-self.year
+        return self.cents+max(0,diff-50)
 
 
 class VendingMachine:
@@ -175,6 +203,35 @@ class VendingMachine:
     """
     "*** YOUR CODE HERE ***"
 
+    def __init__(self,name,price):
+        self.name=name
+        self.price=price
+        self.fund=0
+        self.stock=0
+
+    def vend(self):
+        if self.stock==0:
+            return 'Nothing left to vend. Please restock.'
+        if self.fund<self.price:
+            return f'Please add ${self.price-self.fund} more funds.'
+        if self.fund==self.price:
+            self.fund=0
+            self.stock-=1
+            return f'Here is your {self.name}.'
+        change=self.fund-self.price
+        self.fund=0
+        self.stock-=1
+        return f'Here is your {self.name} and ${change} change.'
+
+    def add_funds(self,k):
+        if self.stock==0:
+            return f'Nothing left to vend. Please restock. Here is your ${k}.'
+        self.fund+=k
+        return f'Current balance: ${self.fund}'
+
+    def restock(self,k):
+        self.stock+=k
+        return f'Current {self.name} stock: {self.stock}'
 
 
 # Tree Data Abstraction
