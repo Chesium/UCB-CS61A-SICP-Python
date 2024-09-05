@@ -467,12 +467,21 @@ class SlowThrower(ThrowerAnt):
     name = 'Slow'
     food_cost = 6
     # BEGIN Problem EC 1
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem EC 1
 
     def throw_at(self, target):
         # BEGIN Problem EC 1
         "*** YOUR CODE HERE ***"
+        target.slow_turns = 5
+        def new_action(gamestate):
+            if target.slow_turns>0:
+                if gamestate.time%2==0:
+                    Bee.action(target,gamestate)
+                target.slow_turns-=1
+            else:
+                Bee.action(target,gamestate)
+        target.action=new_action
         # END Problem EC 1
 
 
