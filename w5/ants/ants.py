@@ -491,12 +491,13 @@ class ScaryThrower(ThrowerAnt):
     name = 'Scary'
     food_cost = 6
     # BEGIN Problem EC 2
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem EC 2
 
     def throw_at(self, target):
         # BEGIN Problem EC 2
         "*** YOUR CODE HERE ***"
+        target.scare(2)
         # END Problem EC 2
 
 
@@ -561,6 +562,10 @@ class Bee(Insect):
     damage = 1
     is_waterproof = True
 
+    def __init__(self, health, place=None):
+        super().__init__(health,place)
+        self.scared = False
+        self.scare_t = 0
 
     def sting(self, ant):
         """Attack an ANT, reducing its health by 1."""
@@ -584,7 +589,11 @@ class Bee(Insect):
 
         gamestate -- The GameState, used to access game state information.
         """
-        destination = self.place.exit
+        if self.scare_t:
+            destination = self.place if self.place.entrance.is_hive else self.place.entrance
+            self.scare_t -= 1
+        else:
+            destination = self.place.exit
 
 
         if self.blocked():
@@ -607,6 +616,9 @@ class Bee(Insect):
         """
         # BEGIN Problem EC 2
         "*** YOUR CODE HERE ***"
+        if not self.scared:
+            self.scare_t = length
+            self.scared = True
         # END Problem EC 2
 
 
