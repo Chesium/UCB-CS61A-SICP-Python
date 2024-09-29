@@ -12,7 +12,9 @@ def cumulative_mul(t):
     Tree(5040, [Tree(60, [Tree(3), Tree(4), Tree(5)]), Tree(42, [Tree(7)])])
     """
     "*** YOUR CODE HERE ***"
-
+    for b in t.branches:
+        cumulative_mul(b)
+        t.label *= b.label
 
 def delete(t, x):
     """Remove all nodes labeled x below the root within Tree t. When a non-leaf
@@ -34,13 +36,13 @@ def delete(t, x):
     Tree(1, [Tree(4), Tree(5), Tree(3, [Tree(6)]), Tree(6), Tree(7), Tree(8), Tree(4)])
     """
     new_branches = []
-    for _________ in ________________:
-        _______________________
+    for b in t.branches:
+        delete(b,x)
         if b.label == x:
-            __________________________________
+            new_branches+=b.branches
         else:
-            __________________________________
-    t.branches = ___________________
+            new_branches.append(b)
+    t.branches = new_branches
 
 
 def convert_link(link):
@@ -54,6 +56,12 @@ def convert_link(link):
     []
     """
     "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return []
+    if type(link.first) == Link:
+        return convert_link(link.first)+convert_link(link.rest)
+    else:
+        return [link.first]+convert_link(link.rest)
 
 
 def add_links(link1, link2):
@@ -69,6 +77,9 @@ def add_links(link1, link2):
     <3 4 5 1 2>
     """
     "*** YOUR CODE HERE ***"
+    if link1 is Link.empty:
+        return link2
+    return Link(link1.first,add_links(link1.rest,link2))
 
 
 def multiply_lnks(lst_of_lnks):
@@ -87,12 +98,12 @@ def multiply_lnks(lst_of_lnks):
     Link(48, Link(12, Link(0)))
     """
     product = 1
-    for _________ in ________________:
-        if __________________________________________:
-            _________________________________
-        ___________________
-    lst_of_lnks_rests = [_________ for _________ in ________________]
-    return _________________________________________________
+    for l in lst_of_lnks:
+        if l is Link.empty:
+            return Link.empty
+        product *= l.first
+    lst_of_lnks_rests = [l.rest for l in lst_of_lnks]
+    return Link(product,multiply_lnks(lst_of_lnks_rests))
 
 
 class Tree:
