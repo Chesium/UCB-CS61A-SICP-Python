@@ -7,7 +7,16 @@
 ;; Returns a list of two-element lists
 (define (enumerate s)
   ; BEGIN PROBLEM 15
-  'replace-this-line
+  (begin
+    (define aux (lambda (l k) 
+        (if (null? l)
+          nil
+          (cons (cons k (cons (car l) nil)) (aux (cdr l) (+ k 1)))
+        )
+      )
+    )
+    (aux s 0)
+  )
   )
   ; END PROBLEM 15
 
