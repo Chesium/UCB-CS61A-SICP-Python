@@ -193,7 +193,15 @@ def make_let_frame(bindings, env):
         raise SchemeError('bad bindings list in let form')
     names = vals = nil
     # BEGIN PROBLEM 14
-    "*** YOUR CODE HERE ***"
+    def process(l):
+        nonlocal names,vals
+        if l!=nil:
+            validate_form(l.first,2,2)
+            names=Pair(l.first.first,names)
+            vals=Pair(scheme_eval(l.first.rest.first,env),vals)
+            process(l.rest)
+    process(bindings)
+    validate_formals(names)
     # END PROBLEM 14
     return env.make_child_frame(names, vals)
 
