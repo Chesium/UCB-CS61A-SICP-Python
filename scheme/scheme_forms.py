@@ -36,7 +36,7 @@ def do_define_form(expressions, env):
         # assigning a name to a value e.g. (define x (+ 1 2))
         validate_form(expressions, 2, 2) # Checks that expressions is a list of length exactly 2
         # BEGIN PROBLEM 4
-        env.define(signature,eval_all(expressions.rest,env))
+        env.define(signature,eval_all(expressions.rest,env,False))
         return signature
         # END PROBLEM 4
     elif isinstance(signature, Pair) and scheme_symbolp(signature.first):

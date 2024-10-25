@@ -94,7 +94,6 @@
     (let (
       (nxt (zip (cdr pairs)))
       )
-      ; (print nxt)
       (let (
         (a (car nxt))
         (b (cadr nxt))

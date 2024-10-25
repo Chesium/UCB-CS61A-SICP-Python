@@ -68,7 +68,7 @@ def scheme_apply(procedure, args, env):
     else:
         assert False, "Unexpected procedure: {}".format(procedure)
 
-def eval_all(expressions, env):
+def eval_all(expressions, env,tail=True):
     """Evaluate each expression in the Scheme list EXPRESSIONS in
     Frame ENV (the current environment) and return the value of the last.
 
@@ -87,7 +87,7 @@ def eval_all(expressions, env):
     if expressions==nil:
         return None
     if expressions.rest==nil:
-        return scheme_eval(expressions.first,env,True)
+        return scheme_eval(expressions.first,env,tail)
     scheme_eval(expressions.first,env)
     return eval_all(expressions.rest,env)
     # END PROBLEM 6
