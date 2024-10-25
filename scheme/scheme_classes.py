@@ -54,7 +54,13 @@ class Frame:
         if len(formals) != len(vals):
             raise SchemeError('Incorrect number of arguments to function call')
         # BEGIN PROBLEM 8
-        "*** YOUR CODE HERE ***"
+        r=Frame(self)
+        def add(f,v):
+            if f!=nil:
+                r.define(f.first,v.first)
+                add(f.rest,v.rest)
+        add(formals,vals)
+        return r
         # END PROBLEM 8
 
 ##############
