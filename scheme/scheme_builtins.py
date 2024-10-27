@@ -655,9 +655,3 @@ def tscheme_write_to_file(path):
 def scheme_print_return(val1, val2):
     print(repl_str(val1))
     return val2
-
-@builtin("enumerate")
-def make_enumerate(lst, index = 0):
-    if lst == nil:
-        return lst
-    return Pair(Pair(index, lst.first),make_enumerate(lst.rest, index + 1))
